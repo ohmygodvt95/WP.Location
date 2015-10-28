@@ -52,7 +52,7 @@ namespace Location
                           Longitude = args.Position.Coordinate.Longitude
                       });
             // tải lại map
-            reloadMap(CurrentPoint);
+            ReloadMap(CurrentPoint);
             // thêm điểm để vẽ
             data.AddData(CurrentPoint);
         }
@@ -77,13 +77,13 @@ namespace Location
                 maximumAge: TimeSpan.FromMinutes(5),
                 timeout: TimeSpan.FromSeconds(10)
                 );
-                await getCurrentLocation();
-                reloadMap(CurrentPoint);
+                await GetCurrentLocation();
+                ReloadMap(CurrentPoint);
 
             }
             catch (UnauthorizedAccessException)
             {
-                var messageDialog = new Windows.UI.Popups.MessageDialog("Bật GPS em ơi");
+                var messageDialog = new MessageDialog("Bật GPS em ơi");
                 await messageDialog.ShowAsync();
             }
             base.OnNavigatedTo(e);
@@ -91,7 +91,7 @@ namespace Location
         }
 
         // Location tracking
-        private async Task getCurrentLocation()
+        private async Task GetCurrentLocation()
         {
             if (Geolocator.LocationStatus == PositionStatus.Disabled)
             {
@@ -112,7 +112,7 @@ namespace Location
             processBar.Visibility = Visibility.Collapsed;
         }
         // reload map
-        private async void reloadMap(Geopoint geopoint)
+        private async void ReloadMap(Geopoint geopoint)
         {
             await MyMap.TrySetViewAsync(geopoint, 16D);
         }
@@ -141,8 +141,8 @@ namespace Location
         private async void gps_Tapped(object sender, TappedRoutedEventArgs e)
         {
             processBar.Visibility = Visibility.Visible;
-            await getCurrentLocation();
-            reloadMap(CurrentPoint);
+            await GetCurrentLocation();
+            ReloadMap(CurrentPoint);
             processBar.Visibility = Visibility.Collapsed;
         }
         // lấy thông tim điểm hiện tại
@@ -151,7 +151,7 @@ namespace Location
             btnSave.IsEnabled = false;
             processBar.Visibility = Visibility.Visible;
             String currentP = "";
-            await getCurrentLocation();
+            await GetCurrentLocation();
             MapLocationFinderResult result = await MapLocationFinder.FindLocationsAtAsync(CurrentPoint);
             if (result.Status == MapLocationFinderStatus.Success)
             {
@@ -214,9 +214,10 @@ namespace Location
         }
         // tiếp tục lấy thông tin
 
-        private async void showMsg(String str)
+        public async void ShowMsg(String str)
         {
-            var messageDialog = new Windows.UI.Popups.MessageDialog(str);
+            if (str == null) throw new ArgumentNullException(nameof(str));
+            var messageDialog = new MessageDialog(str);
             await messageDialog.ShowAsync();
         }
 
