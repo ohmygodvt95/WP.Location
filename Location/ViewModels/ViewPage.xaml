@@ -1,0 +1,208 @@
+﻿<Page x:Class="Location.ViewPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:interop="using:Windows.UI.Xaml.Interop"
+      xmlns:local="using:Location"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="ListboxTemplate">
+            <Grid Width="400" Height="30">
+                <StackPanel x:Name="itemPanel" Tapped="itemPanel_Tapped">
+                    <FlyoutBase.AttachedFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="edit"
+                                            Click="edit_Click"
+                                            Text="Chỉnh sửa" />
+                            <MenuFlyoutItem x:Name="delete"
+                                            Click="delete_Click"
+                                            Text="Xóa" />
+                        </MenuFlyout>
+                    </FlyoutBase.AttachedFlyout>
+                    <TextBlock x:Name="textBlock"
+                               Height="30"
+                               Margin="5,0,5,0"
+                               VerticalAlignment="Stretch"
+                               FontSize="16"
+                               Text="{Binding Name}"
+                               TextWrapping="Wrap"
+                               d:LayoutOverrides="LeftPosition, RightPosition" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        <Style x:Key="Radius" TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="#FF00C8F8"
+                                BorderBrush="#ccc"
+                                BorderThickness="0"
+                                CornerRadius="50">
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid x:Name="main"
+          Margin="0,0,0,0"
+          Background="#FAFAFA">
+        <Grid x:Name="grid"
+              Height="80"
+              Margin="0,0,0,0"
+              VerticalAlignment="Top"
+              Background="#FF00C8F8">
+            <AppBarButton x:Name="btnBack"
+                          Width="80"
+                          Height="60"
+                          Margin="0,12,0,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Top"
+                          BorderBrush="White"
+                          Click="btnBack_Click"
+                          Foreground="#fff"
+                          Icon="Back"
+                          Label="">
+                <AppBarButton.Transitions>
+                    <TransitionCollection>
+                        <AddDeleteThemeTransition />
+                        <EdgeUIThemeTransition Edge="Left" />
+                    </TransitionCollection>
+                </AppBarButton.Transitions>
+            </AppBarButton>
+
+            <Border Height="60"
+                    Margin="80,0,0,0"
+                    VerticalAlignment="Top"
+                    BorderBrush="Black"
+                    BorderThickness="0">
+                <TextBlock x:Name="textBlock"
+                           Height="40"
+                           Margin="0,22,10,-2"
+                           VerticalAlignment="Center"
+                           CharacterSpacing="10"
+                           FontSize="30"
+                           FontWeight="Bold"
+                           Foreground="#fff"
+                           MaxLines="1"
+                           Text="Lấy thông tin"
+                           TextAlignment="Right"
+                           TextWrapping="Wrap">
+                    <TextBlock.Transitions>
+                        <TransitionCollection>
+                            <AddDeleteThemeTransition />
+                        </TransitionCollection>
+                    </TextBlock.Transitions>
+                </TextBlock>
+            </Border>
+        </Grid>
+        <Canvas x:Name="canvas"
+                Width="400"
+                Margin="0,80,0,429">
+            <Canvas.Transitions>
+                <TransitionCollection>
+                    <AddDeleteThemeTransition />
+                </TransitionCollection>
+            </Canvas.Transitions>
+            <Maps:MapControl x:Name="MyMap"
+                             Width="400"
+                             Height="180"
+                             MapServiceToken="Credentials=&quot;AiFTXnMoalZ-eN9AjO34J_3ZIv0r1rFsnEKOn8TUBD6QvCyoVm7FVGkdNZzM7bVu&quot;" />
+            <ProgressBar x:Name="processBar"
+                         Width="400"
+                         Height="26"
+                         Canvas.ZIndex="99"
+                         FontSize="40"
+                         IsIndeterminate="True"
+                         RequestedTheme="Light"
+                         Visibility="Visible" />
+            <Image x:Name="zoomIn"
+                   Canvas.Top="53"
+                   Width="40"
+                   Height="38"
+                   Canvas.ZIndex="100"
+                   Source="ms-appx:///Assets/image/zoomin.png"
+                   Tapped="zoomIn_Tapped" />
+            <Image x:Name="zoomOut"
+                   Canvas.Top="96"
+                   Width="40"
+                   Height="38"
+                   Canvas.ZIndex="100"
+                   Source="ms-appx:///Assets/image/zoomout.png"
+                   Stretch="Fill"
+                   Tapped="zoomOut_Tapped" />
+            <Image x:Name="imgMarker"
+                   Canvas.Left="190"
+                   Canvas.Top="82"
+                   Width="20"
+                   Height="20"
+                   Canvas.ZIndex="100"
+                   Source="ms-appx:///Assets/image/marker.png"
+                   Tapped="zoomIn_Tapped"
+                   Visibility="Collapsed" />
+            <Image x:Name="gps"
+                   Canvas.Left="350"
+                   Canvas.Top="133"
+                   Width="50"
+                   Height="48"
+                   Canvas.ZIndex="100"
+                   RenderTransformOrigin="0.511,0.422"
+                   Source="ms-appx:///Assets/image/gps.png"
+                   Stretch="Fill"
+                   Tapped="gps_Tapped" />
+        </Canvas>
+        <Button x:Name="btnSave"
+                Width="100"
+                Margin="150,269,141,265"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                BorderBrush="{x:Null}"
+                BorderThickness="0"
+                Click="btnSave_Click"
+                Content="Ghi nhận"
+                Foreground="White"
+                IsDoubleTapEnabled="False"
+                IsHoldingEnabled="False"
+                IsRightTapEnabled="False"
+                Padding="0"
+                Style="{StaticResource Radius}">
+            <Button.Transitions>
+                <TransitionCollection>
+                    <AddDeleteThemeTransition />
+                </TransitionCollection>
+            </Button.Transitions>
+        </Button>
+        <ListBox x:Name="listBox"
+                 Width="400"
+                 Height="254"
+                 Margin="0,383,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Background="#FAFAFA"
+                 BorderBrush="#FFBDBABA"
+                 ItemTemplate="{StaticResource ListboxTemplate}"
+                 ItemsSource="{Binding MyPoint}" />
+        <Button x:Name="button"
+                Width="78"
+                Height="73"
+                Margin="280,285,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#FFEC2121"
+                BorderBrush="#FFF50B0B"
+                Click="button_Click"
+                Content="Kết thúc"
+                Foreground="#FFFBFBFB" />
+
+    </Grid>
+</Page>

@@ -1,0 +1,68 @@
+﻿<Page x:Class="Location.History"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:Location"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="DataTemplate2">
+            <Grid Width="324" Height="30">
+                <TextBlock x:Name="textBlock"
+                           FontSize="18.667"
+                           Tag="{Binding Id}"
+                           Tapped="textBlock_Tapped"
+                           Text="{Binding Name}"
+                           TextWrapping="Wrap"
+                           d:LayoutOverrides="LeftMargin, RightMargin, LeftPosition, RightPosition" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="#FF00C8F8">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition />
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ListBox x:Name="listBox"
+                 Grid.RowSpan="2"
+                 Width="400"
+                 Margin="0,80,0,0"
+                 HorizontalAlignment="Right"
+                 Background="#FAFAFA"
+                 ItemTemplate="{StaticResource DataTemplate2}"
+                 ItemsSource="{Binding DataBusLine}" />
+        <AppBarButton x:Name="appBarButton"
+                      Grid.RowSpan="2"
+                      Width="80"
+                      Height="60"
+                      Margin="0,10,0,0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Click="appBarButton_Click"
+                      Icon="Back"
+                      Label="" />
+        <TextBlock x:Name="textBlock"
+                   Grid.RowSpan="2"
+                   Width="310"
+                   Height="40"
+                   Margin="80,25,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   FontSize="26.667"
+                   FontWeight="Bold"
+                   Text="Lộ trình đã tạo"
+                   TextAlignment="Right"
+                   TextWrapping="Wrap" />
+
+
+    </Grid>
+</Page>
