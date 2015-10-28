@@ -35,7 +35,7 @@ namespace Location
             data = new BusLine();
             data = e.Parameter as BusLine;
             listBox.ItemsSource = data.ListPoints;
-            textBlock.Text = data.name;
+            textBlock.Text = data.Name;
         }
 
         private async void edit_Click(object sender, RoutedEventArgs e)
@@ -74,7 +74,7 @@ namespace Location
             {
                 await dbPointHelper.onCreate(dbPointHelper.DB_PATH);
             }
-            DataBusLine name = new DataBusLine(data.name, data.data);
+            DataBusLine name = new DataBusLine(data.Name, data.Data);
             dbLineHelper.Insert(name);
             DataBusLine newLine = new DataBusLine();
             newLine = dbLineHelper.GetNewLine();
@@ -88,8 +88,8 @@ namespace Location
             processBar.Visibility = Visibility.Collapsed;
             var dialog = new MessageDialog("Lưu dữ liệu thành công! total: " + i);
             await dialog.ShowAsync();
-            System.Diagnostics.Debug.WriteLine(data.name);
-            System.Diagnostics.Debug.WriteLine(data.data);
+            System.Diagnostics.Debug.WriteLine(data.Name);
+            System.Diagnostics.Debug.WriteLine(data.Data);
             Frame.Navigate(typeof (MainPage));
         }
 

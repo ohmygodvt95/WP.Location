@@ -61,8 +61,8 @@ namespace Location
         {
             GetBusLineNameDialog dialogName = new GetBusLineNameDialog();
             await dialogName.ShowAsync();
-            data.name = dialogName.txt;
-            System.Diagnostics.Debug.WriteLine(data.name);
+            data.Name = dialogName.txt;
+            System.Diagnostics.Debug.WriteLine(data.Name);
             Geolocator.PositionChanged += geolocator_PositionChanged;
             try
             {
