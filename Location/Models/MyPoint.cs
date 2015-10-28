@@ -10,9 +10,9 @@ namespace Location.Models
         private String _long;
         public MyPoint()
         {
-            this._name = "";
-            this._lat = "";
-            this._long = "";
+            _name = "";
+            _lat = "";
+            _long = "";
         }
         public String Name
         {
