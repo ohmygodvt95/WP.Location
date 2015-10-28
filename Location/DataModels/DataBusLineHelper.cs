@@ -59,7 +59,7 @@ namespace Location.DataModels
         {
             using (var dbConn = new SQLiteConnection(DbPath))
             {
-                List<DataBusLine> myCollection = dbConn.Table<DataBusLine>().ToList<DataBusLine>();
+                var myCollection = dbConn.Table<DataBusLine>().ToList();
                 ObservableCollection<DataBusLine> data = new ObservableCollection<DataBusLine>(myCollection);
                 return data.Last();
             }
@@ -69,7 +69,7 @@ namespace Location.DataModels
         {
             using (var dbConn = new SQLiteConnection(DbPath))
             {
-                List<DataBusLine> myCollection = dbConn.Table<DataBusLine>().ToList<DataBusLine>();
+                List<DataBusLine> myCollection = dbConn.Table<DataBusLine>().ToList();
                 ObservableCollection<DataBusLine> data = new ObservableCollection<DataBusLine>(myCollection);
                 return data;
             }
@@ -85,11 +85,11 @@ namespace Location.DataModels
             }
         }
         //
-        public void DeleteBusLine(int Id)
+        public void DeleteBusLine(int id)
         {
             using (var dbConn = new SQLiteConnection(DbPath))
             {
-                var existingconact = dbConn.Query<DataBusLine>("SELECT * FROM DataBusLine WHERE Id =" + Id).FirstOrDefault();
+                var existingconact = dbConn.Query<DataBusLine>("SELECT * FROM DataBusLine WHERE Id =" + id).FirstOrDefault();
                 if (existingconact != null)
                 {
                     dbConn.RunInTransaction(() =>
