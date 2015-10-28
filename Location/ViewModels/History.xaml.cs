@@ -64,7 +64,7 @@ namespace Location
             db = new DataBusLineHelper();
             if (await db.CheckFileExists(db.DbName) == false)
             {
-                await db.onCreate(db.DbPath);
+                await db.OnCreate(db.DbPath);
             }
             
 

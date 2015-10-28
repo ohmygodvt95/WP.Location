@@ -67,7 +67,7 @@ namespace Location
             DataBusLineHelper dbLineHelper = new DataBusLineHelper();
             if (await dbLineHelper.CheckFileExists(dbLineHelper.DbName) == false)
             {
-                await dbLineHelper.onCreate(dbLineHelper.DbPath);
+                await dbLineHelper.OnCreate(dbLineHelper.DbPath);
             }
             DatapointHelper dbPointHelper = new DatapointHelper();
             if (await dbPointHelper.CheckFileExists(dbPointHelper.dbName) == false)

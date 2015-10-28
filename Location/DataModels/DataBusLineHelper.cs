@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -16,7 +15,7 @@ namespace Location.DataModels
         public String DbName = "DataBusLine.sqlite";
         public string DbPath = Path.Combine(Path.Combine(ApplicationData.Current.LocalFolder.Path, "DataBusLine.sqlite"));
         //Create Tabble   
-        public async Task<bool> onCreate(string DB_PATH)
+        public async Task<bool> OnCreate(string DB_PATH)
         {
             try
             {
