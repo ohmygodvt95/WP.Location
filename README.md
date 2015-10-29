@@ -1,3 +1,5 @@
 # WP.Location
-Lấy dữ liệu hệ thống bus
-CODE BY LÊ VĨNH THIỆN - HUST K58
+### Lấy dữ liệu hệ thống bus > WindowsPhone
+- @author LÊ VĨNH THIỆN
+- @copyright SIG
+
