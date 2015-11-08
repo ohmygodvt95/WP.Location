@@ -70,10 +70,9 @@ namespace Location.DataModels
         public async Task<DataBusLine> GetNewLine()
         {
             await ConnectDb();
-            List<DataBusLine> myCollection = await _conn.Table<DataBusLine>().ToListAsync();
-            ObservableCollection<DataBusLine> data = new ObservableCollection<DataBusLine>(myCollection);
-            System.Diagnostics.Debug.WriteLine(data.LastOrDefault());
-            return data.LastOrDefault();
+            List<DataBusLine> b = await _conn.QueryAsync<DataBusLine>("SELECT * FROM DataBusLine ORDER BY Id DESC LIMIT 1");
+            if (b.Count == 0) return null;
+            return b[0];
         }
         public async Task<DataBusLine> ReadBusLine(int id)
         {

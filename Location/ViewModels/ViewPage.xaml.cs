@@ -28,7 +28,7 @@ namespace Location
     {
         public Geolocator Geolocator;
         public Geopoint CurrentPoint;
-        private BusLine _data;
+        private BusLine data;
         public ViewPage()
         {
             this.InitializeComponent();
@@ -40,31 +40,31 @@ namespace Location
                 DesiredAccuracy = PositionAccuracy.High,
                 MovementThreshold = 2
             };
-            _data = new BusLine();
-            listBox.ItemsSource = _data.ListPoints;
+            data = new BusLine();
+            listBox.ItemsSource = data.ListPoints;
         }
         // sự kiện khi có sự thay đổi vị trí
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
-            if (args.Position != null)
-                CurrentPoint = new Geopoint(position: new BasicGeoposition()
-                    {
-                        //Geopoint for HaNoi 
-                        Latitude = args.Position.Coordinate.Latitude,
-                        Longitude = args.Position.Coordinate.Longitude
-                    });
+            CurrentPoint = new Geopoint(
+                      new BasicGeoposition()
+                      {
+                          //Geopoint 
+                          Latitude = args.Position.Coordinate.Latitude,
+                          Longitude = args.Position.Coordinate.Longitude
+                      });
             // tải lại map
             ReloadMap(CurrentPoint);
             // thêm điểm để vẽ
-            _data.AddData(CurrentPoint);
+            data.AddData(CurrentPoint);
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             GetBusLineNameDialog dialogName = new GetBusLineNameDialog();
             await dialogName.ShowAsync();
-            _data.Name = dialogName.txt;
-            System.Diagnostics.Debug.WriteLine(_data.Name);
+            data.Name = dialogName.txt;
+            System.Diagnostics.Debug.WriteLine(data.Name);
             Geolocator.PositionChanged += geolocator_PositionChanged;
             try
             {
@@ -95,7 +95,6 @@ namespace Location
         // Location tracking
         private async Task GetCurrentLocation()
         {
-            btnSave.IsEnabled = false;
             if (Geolocator.LocationStatus == PositionStatus.Disabled)
             {
                 // Location is turned off
@@ -113,7 +112,6 @@ namespace Location
                           Longitude = geoposition.Coordinate.Point.Position.Longitude
                       });
             processBar.Visibility = Visibility.Collapsed;
-            btnSave.IsEnabled = true;
         }
         // reload map
         private async void ReloadMap(Geopoint geopoint)
@@ -159,28 +157,24 @@ namespace Location
             MapLocationFinderResult result = await MapLocationFinder.FindLocationsAtAsync(CurrentPoint);
             if (result.Status == MapLocationFinderStatus.Success)
             {
-                MyPoint myPoint = new MyPoint
-                {
-                    Name = result.Locations[0].Address.StreetNumber + " "
-                           + result.Locations[0].Address.Street + ", "
-                           + result.Locations[0].Address.District + ", "
-                           + result.Locations[0].Address.Town,
-                    Long = CurrentPoint.Position.Longitude + ""
-                };
+                MyPoint myPoint = new MyPoint();
 
-                myPoint.Long = CurrentPoint.Position.Latitude + "";
+                myPoint.Name = result.Locations[0].Address.StreetNumber + " "
+                    + result.Locations[0].Address.Street + ", "
+                    + result.Locations[0].Address.District + ", "
+                    + result.Locations[0].Address.Town;
+                myPoint.Long = CurrentPoint.Position.Longitude + "";
+                myPoint.Lat = CurrentPoint.Position.Latitude + "";
 
-                _data.AddPoint(myPoint);
+                data.AddPoint(myPoint);
                 currentP = myPoint.Name;
             }
 
-            MapIcon mapIcon = new MapIcon
-            {
-                Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/image/map_marker.png")),
-                Title = currentP,
-                Location = CurrentPoint,
-                NormalizedAnchorPoint = new Point(0.5, 0.5)
-            };
+            MapIcon mapIcon = new MapIcon();
+            mapIcon.Image = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/image/map_marker.png"));
+            mapIcon.Title = currentP;
+            mapIcon.Location = CurrentPoint;
+            mapIcon.NormalizedAnchorPoint = new Point(0.5, 0.5);
             MyMap.MapElements.Add(mapIcon);
 
             processBar.Visibility = Visibility.Collapsed;
@@ -191,31 +185,28 @@ namespace Location
         // xem ds điểm đang có
         public static void ShowToast(Grid layoutRoot, string message)
         {
-            Grid grid = new Grid
-            {
-                Width = 360,
-                Height = 40,
-                Background = new Windows.UI.Xaml.Media.SolidColorBrush(Color.FromArgb(100, 0, 0, 0)),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(0, 0, 0, 30)
-            };
+            Grid grid = new Grid();
+            grid.Width = 360;
+            grid.Height = 40;
+            grid.Background = new Windows.UI.Xaml.Media.SolidColorBrush(Color.FromArgb(100, 0, 0, 0));
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
+            grid.VerticalAlignment = VerticalAlignment.Bottom;
+            grid.Margin = new Thickness(0, 0, 0, 30);
 
 
-            TextBlock text = new TextBlock
-            {
-                Text = message,
-                VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                FontSize = 20,
-                Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Colors.White)
-            };
+            TextBlock text = new TextBlock();
+            text.Text = message;
+            text.VerticalAlignment = VerticalAlignment.Center;
+            text.HorizontalAlignment = HorizontalAlignment.Center;
+            text.FontSize = 20;
+            text.Foreground = new Windows.UI.Xaml.Media.SolidColorBrush(Colors.White);
 
             grid.Children.Add(text);
 
             layoutRoot.Children.Add(grid);
 
-            DispatcherTimer timer = new DispatcherTimer {Interval = new TimeSpan(0, 0, 2)};
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 2);
             timer.Tick += (sender, args) =>
             {
                 layoutRoot.Children.Remove(grid);
@@ -234,7 +225,7 @@ namespace Location
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
-            _data.Reset();
+            data.Reset();
         }
 
         private void itemPanel_Tapped(object sender, TappedRoutedEventArgs e)
@@ -247,22 +238,22 @@ namespace Location
 
         private async void edit_Click(object sender, RoutedEventArgs e)
         {
-            EditPointDialog dialog = new EditPointDialog(_data.ListPoints.ElementAt(listBox.SelectedIndex).Name);
+            EditPointDialog dialog = new EditPointDialog(data.ListPoints.ElementAt(listBox.SelectedIndex).Name);
             await dialog.ShowAsync();
             if (dialog.check == 1)
             {
-                _data.ListPoints.ElementAt(listBox.SelectedIndex).Name = dialog.txt;
+                data.ListPoints.ElementAt(listBox.SelectedIndex).Name = dialog.txt;
             }
         }
 
         private void delete_Click(object sender, RoutedEventArgs e)
         {
-            _data.ListPoints.RemoveAt(listBox.SelectedIndex);
+            data.ListPoints.RemoveAt(listBox.SelectedIndex);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof (SavePage), _data);
+            Frame.Navigate(typeof (SavePage), data);
         }
     }
 }
