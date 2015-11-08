@@ -76,7 +76,7 @@ namespace Location.DataModels
             await ConnectDb();
             List<DataBusLine> b = await _conn.QueryAsync<DataBusLine>("SELECT * FROM DataBusLine ORDER BY Id DESC LIMIT 1");
             if (b.Count == 0) return null;
-            System.Diagnostics.Debug.WriteLine("get ok");
+           // System.Diagnostics.Debug.WriteLine("get ok");
             return b[0];
         }
         public async Task<DataBusLine> ReadBusLine(int id)
