@@ -30,6 +30,10 @@ namespace Location.DataModels
             IsConnect = true;
         }
 
+        public async Task OnCreate()
+        {
+            await ConnectDb();
+        }
         public static async Task<bool> DoesDbExist()
         {
             bool dbexist = true;
@@ -72,6 +76,7 @@ namespace Location.DataModels
             await ConnectDb();
             List<DataBusLine> b = await _conn.QueryAsync<DataBusLine>("SELECT * FROM DataBusLine ORDER BY Id DESC LIMIT 1");
             if (b.Count == 0) return null;
+            System.Diagnostics.Debug.WriteLine("get ok");
             return b[0];
         }
         public async Task<DataBusLine> ReadBusLine(int id)

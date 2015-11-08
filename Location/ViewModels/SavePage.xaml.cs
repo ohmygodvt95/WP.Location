@@ -71,18 +71,21 @@ namespace Location
             DataBusLine newLine = await dbHelper.GetNewLine();
             //System.Diagnostics.Debug.WriteLine("Lay gia tri vua them");
             int i = 0;
-            foreach (var item in data.ListPoints)
+            if (newLine != null)
             {
-                i++;
-                DataPoint dataPoint = new DataPoint(item.Name, newLine.Id, item.Long, item.Lat);
-                dbHelper.InsertNewPoint(dataPoint);
-                //System.Diagnostics.Debug.WriteLine("Them diem");
+                foreach (var item in data.ListPoints)
+                {
+                    i++;
+                    DataPoint dataPoint = new DataPoint(item.Name, newLine.Id, item.Long, item.Lat);
+                    dbHelper.InsertNewPoint(dataPoint);
+                    //System.Diagnostics.Debug.WriteLine("Them diem");
+                }
+                processBar.Visibility = Visibility.Collapsed;
+                var dialog = new MessageDialog("Lưu dữ liệu thành công! total: " + i);
+                await dialog.ShowAsync();
+                System.Diagnostics.Debug.WriteLine(data.Name);
+                System.Diagnostics.Debug.WriteLine(data.Data);
             }
-            processBar.Visibility = Visibility.Collapsed;
-            var dialog = new MessageDialog("Lưu dữ liệu thành công! total: " + i);
-            await dialog.ShowAsync();
-            System.Diagnostics.Debug.WriteLine(data.Name);
-            System.Diagnostics.Debug.WriteLine(data.Data);
             Frame.Navigate(typeof (MainPage));
         }
 

@@ -2,6 +2,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Location.DataModels;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -25,11 +26,14 @@ namespace Location
             statusBar.BackgroundColor = Color.FromArgb(255, 0, 200, 248);
 
             statusBar.BackgroundOpacity = 1;
+           
 
 
         }
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DataHelper dbHelper = new DataHelper();
+            await dbHelper.OnCreate();
         }
 
         private void btnGetLocation_Click(object sender, RoutedEventArgs e)
