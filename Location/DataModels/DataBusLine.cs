@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite;
 
 namespace Location.DataModels
 {
+    [Table("DataBusLine")]
     class DataBusLine
     {
         [SQLite.PrimaryKey, SQLite.AutoIncrement]

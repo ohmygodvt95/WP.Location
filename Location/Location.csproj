@@ -104,9 +104,8 @@
       <DependentUpon>GetBusLineNameDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModels\DataBusLine.cs" />
-    <Compile Include="DataModels\DataBusLineHelper.cs" />
+    <Compile Include="DataModels\DataHelper.cs" />
     <Compile Include="DataModels\DataPoint.cs" />
-    <Compile Include="DataModels\DatapointHelper.cs" />
     <Compile Include="SQLite.cs" />
     <Compile Include="SQLiteAsync.cs" />
     <Compile Include="ViewModels\History.xaml.cs">

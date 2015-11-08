@@ -64,26 +64,19 @@ namespace Location
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             processBar.Visibility  = Visibility.Visible;
-            DataBusLineHelper dbLineHelper = new DataBusLineHelper();
-            if (await dbLineHelper.CheckFileExists(dbLineHelper.DbName) == false)
-            {
-                await dbLineHelper.OnCreate(dbLineHelper.DbPath);
-            }
-            DatapointHelper dbPointHelper = new DatapointHelper();
-            if (await dbPointHelper.CheckFileExists(dbPointHelper.dbName) == false)
-            {
-                await dbPointHelper.onCreate(dbPointHelper.DB_PATH);
-            }
+            DataHelper dbHelper = new DataHelper();
             DataBusLine name = new DataBusLine(data.Name, data.Data);
-            dbLineHelper.Insert(name);
-            DataBusLine newLine = new DataBusLine();
-            newLine = dbLineHelper.GetNewLine();
+            dbHelper.InsertNewBusLine(name);
+            //System.Diagnostics.Debug.WriteLine("Them tuyen");
+            DataBusLine newLine = await dbHelper.GetNewLine();
+            //System.Diagnostics.Debug.WriteLine("Lay gia tri vua them");
             int i = 0;
             foreach (var item in data.ListPoints)
             {
                 i++;
                 DataPoint dataPoint = new DataPoint(item.Name, newLine.Id, item.Long, item.Lat);
-                dbPointHelper.Insert(dataPoint);
+                dbHelper.InsertNewPoint(dataPoint);
+                //System.Diagnostics.Debug.WriteLine("Them diem");
             }
             processBar.Visibility = Visibility.Collapsed;
             var dialog = new MessageDialog("Lưu dữ liệu thành công! total: " + i);

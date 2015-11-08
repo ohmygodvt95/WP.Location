@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -13,12 +14,12 @@ namespace Location
     /// </summary>
     public sealed partial class ReviewPage : Page
     {
-        private ObservableCollection<DataPoint> ListPoint;
-        private DatapointHelper dbHelper;
+        private List<DataPoint> ListPoint;
+        private DataHelper dbHelper;
         public ReviewPage()
         {
             this.InitializeComponent();
-            ListPoint = new ObservableCollection<DataPoint>();
+            ListPoint = new List<DataPoint>();
         }
 
         /// <summary>
@@ -26,12 +27,11 @@ namespace Location
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             var Id = e.Parameter as String;
-            System.Diagnostics.Debug.WriteLine(Id);
-            dbHelper = new DatapointHelper();
-            ListPoint = dbHelper.ReadPointsOfBusLine(int.Parse(Id));
+            dbHelper = new DataHelper();
+            ListPoint = await dbHelper.ReadPointsOfBusLine(int.Parse(Id));
             listBox.ItemsSource = ListPoint;
 
         }

@@ -17,7 +17,8 @@ namespace Location
     public sealed partial class History : Page
     {
         private ObservableCollection<DataBusLine> data;
-        private DataBusLineHelper db;
+        //private DataBusLineHelper db;
+        private DataHelper Db;
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
@@ -61,14 +62,16 @@ namespace Location
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
-            db = new DataBusLineHelper();
-            if (await db.CheckFileExists(db.DbName) == false)
-            {
-                await db.OnCreate(db.DbPath);
-            }
-            
+            //db = new DataBusLineHelper();
+            //if (await db.CheckFileExists(db.DbName) == false)
+            //{
+            //    await db.OnCreate(db.DbPath);
+            //}
 
-            data = db.ReadAllBusLines();
+
+            //data = db.ReadAllBusLines();
+            Db = new DataHelper();
+            data = await Db.ReadAllBusLines();
             listBox.ItemsSource = data;
 
         }
@@ -83,7 +86,6 @@ namespace Location
         private void textBlock_Tapped(object sender, TappedRoutedEventArgs e)
         {
             TextBlock a = (TextBlock) sender;
-            System.Diagnostics.Debug.WriteLine(a.Tag);
             String Id = a.Tag.ToString();
             Frame.Navigate(typeof (ReviewPage), Id);
         }
