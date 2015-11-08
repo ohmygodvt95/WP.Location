@@ -67,9 +67,9 @@ namespace Location
             DataHelper dbHelper = new DataHelper();
             DataBusLine name = new DataBusLine(data.Name, data.Data);
             dbHelper.InsertNewBusLine(name);
-            System.Diagnostics.Debug.WriteLine("Them tuyen");
+            //System.Diagnostics.Debug.WriteLine("Them tuyen");
             DataBusLine newLine = await dbHelper.GetNewLine();
-            System.Diagnostics.Debug.WriteLine("Lay gia tri vua them");
+            //System.Diagnostics.Debug.WriteLine("Lay gia tri vua them");
             int i = 0;
             foreach (var item in data.ListPoints)
             {
